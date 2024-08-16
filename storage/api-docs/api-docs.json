@@ -1,0 +1,1365 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "TICKET API",
+        "description": "Documentation de mon API Laravel",
+        "contact": {
+            "name": "Support API",
+            "email": "shadracmeshacdimon@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Liste paginée des événements en cours",
+                "operationId": "7058ab7c89d20c752b6afd6d808f6526",
+                "responses": {
+                    "200": {
+                        "description": "Liste des événements en cours récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Event"
+                                            }
+                                        },
+                                        "first_page_url": {
+                                            "type": "string"
+                                        },
+                                        "from": {
+                                            "type": "integer"
+                                        },
+                                        "last_page": {
+                                            "type": "integer"
+                                        },
+                                        "last_page_url": {
+                                            "type": "string"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "type": "string"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string"
+                                        },
+                                        "to": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Créer un nouvel événement",
+                "operationId": "508895e03d7f10edac84357084c87b20",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "event_title",
+                                    "event_description",
+                                    "event_date",
+                                    "event_image",
+                                    "event_category",
+                                    "event_city",
+                                    "event_address",
+                                    "event_status"
+                                ],
+                                "properties": {
+                                    "event_title": {
+                                        "type": "string",
+                                        "maxLength": 30
+                                    },
+                                    "event_description": {
+                                        "type": "string",
+                                        "maxLength": 16777215
+                                    },
+                                    "event_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "event_image": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "event_category": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Autre",
+                                            "Concert-Spectacle",
+                                            "Diner Gala",
+                                            "Festival",
+                                            "Formation"
+                                        ]
+                                    },
+                                    "event_city": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "event_address": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "event_status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "upcoming",
+                                            "completed",
+                                            "cancelled"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Événement créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Afficher un événement spécifique",
+                "operationId": "6f743f71f7a88dbe57be1d9c9ebf47cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Événement récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Événement non trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Récupérer toutes les commandes",
+                "operationId": "2cd7e03021e72d9d799c12dfe179c865",
+                "responses": {
+                    "200": {
+                        "description": "Liste des commandes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Order"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Créer une nouvelle commande",
+                "operationId": "d690d6834318e9b064df441e854de8b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_number",
+                                    "order_event_id",
+                                    "order_price",
+                                    "order_type",
+                                    "order_payment"
+                                ],
+                                "properties": {
+                                    "order_number": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "order_event_id": {
+                                        "type": "integer"
+                                    },
+                                    "order_price": {
+                                        "type": "integer"
+                                    },
+                                    "order_type": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "order_payment": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "order_info": {
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Commande créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Récupérer une commande par ID",
+                "operationId": "c29621029e70f65247909d3e09031118",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la commande",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Commande trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Commande non trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/number/{orderNumber}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Récupérer une commande par numéro de commande",
+                "operationId": "491ac82e8a5d57333691fde4c9e6cf48",
+                "parameters": [
+                    {
+                        "name": "orderNumber",
+                        "in": "path",
+                        "description": "Numéro de commande",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Commande trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Commande non trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Récupérer les commandes de l'utilisateur",
+                "description": "Récupère une liste paginée des commandes de l'utilisateur authentifié",
+                "operationId": "30079d06b088ad990e27d9f5f092be4c",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Numéro de la page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste paginée des commandes de l'utilisateur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Order"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer"
+                                        },
+                                        "last_page": {
+                                            "type": "integer"
+                                        },
+                                        "per_page": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/order-intents": {
+            "get": {
+                "tags": [
+                    "Order Intents"
+                ],
+                "summary": "Récupérer toutes les intentions de commande",
+                "operationId": "3b95437fa58cf89d18c384277358a46d",
+                "responses": {
+                    "200": {
+                        "description": "Liste des intentions de commande",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OrderIntent"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Order Intents"
+                ],
+                "summary": "Créer une nouvelle intention de commande",
+                "operationId": "6237f7cc81ff48ca3b38154d748e2f69",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_intent_price",
+                                    "order_intent_type",
+                                    "user_email",
+                                    "user_phone",
+                                    "expiration_date"
+                                ],
+                                "properties": {
+                                    "order_intent_price": {
+                                        "type": "integer"
+                                    },
+                                    "order_intent_type": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "user_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 100
+                                    },
+                                    "user_phone": {
+                                        "type": "string",
+                                        "maxLength": 20
+                                    },
+                                    "expiration_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Intention de commande créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderIntent"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/order-intents/{id}": {
+            "get": {
+                "tags": [
+                    "Order Intents"
+                ],
+                "summary": "Récupérer une intention de commande par ID",
+                "operationId": "8a88699e9e0f66499d58ce239b516504",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'intention de commande",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Intention de commande trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderIntent"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Intention de commande non trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/order-intents/clean-expired": {
+            "post": {
+                "tags": [
+                    "Order Intents"
+                ],
+                "summary": "Nettoyer les intentions de commande expirées",
+                "operationId": "ced06ef631c355c944339b77209667fb",
+                "responses": {
+                    "200": {
+                        "description": "Intentions de commande expirées nettoyées",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "deleted_count": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/validate-order-intent/{id}": {
+            "post": {
+                "tags": [
+                    "Order Intents"
+                ],
+                "summary": "Valider une intention de commande",
+                "operationId": "e3644d47645441c08d9b4c106155ceed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'intention de commande",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Commande validée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "order_number": {
+                                            "type": "string"
+                                        },
+                                        "ticket_download_url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur lors de la validation de la commande",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/ticket-types": {
+            "get": {
+                "tags": [
+                    "TicketTypes"
+                ],
+                "summary": "Obtenir tous les types de tickets",
+                "operationId": "64e4b205a82da5044837539a6664d170",
+                "responses": {
+                    "200": {
+                        "description": "Liste des types de tickets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TicketType"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "TicketTypes"
+                ],
+                "summary": "Créer un nouveau type de ticket",
+                "operationId": "a0422b6de44e07976c5380641c187507",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "ticket_type_event_id",
+                                    "ticket_type_name",
+                                    "ticket_type_price",
+                                    "ticket_type_quantity",
+                                    "ticket_type_real_quantity",
+                                    "ticket_type_total_quantity",
+                                    "ticket_type_description"
+                                ],
+                                "properties": {
+                                    "ticket_type_event_id": {
+                                        "type": "integer"
+                                    },
+                                    "ticket_type_name": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "ticket_type_price": {
+                                        "type": "integer"
+                                    },
+                                    "ticket_type_quantity": {
+                                        "type": "integer"
+                                    },
+                                    "ticket_type_real_quantity": {
+                                        "type": "integer"
+                                    },
+                                    "ticket_type_total_quantity": {
+                                        "type": "integer"
+                                    },
+                                    "ticket_type_description": {
+                                        "type": "string",
+                                        "maxLength": 16777215
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Type de ticket créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TicketType"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/{eventId}/ticket-types": {
+            "get": {
+                "tags": [
+                    "TicketTypes"
+                ],
+                "summary": "Obtenir tous les types de tickets pour un événement spécifique",
+                "operationId": "d913cf056cf85e181d64f563e15314d3",
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des types de tickets pour l'événement",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TicketType"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucun type de ticket trouvé pour cet événement",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "event_id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Event": {
+                "required": [
+                    "event_id",
+                    "event_title",
+                    "event_description",
+                    "event_date",
+                    "event_image",
+                    "event_category",
+                    "event_city",
+                    "event_address",
+                    "event_status"
+                ],
+                "properties": {
+                    "event_id": {
+                        "type": "integer"
+                    },
+                    "event_title": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "event_description": {
+                        "type": "string",
+                        "maxLength": 16777215
+                    },
+                    "event_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "event_image": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "event_category": {
+                        "type": "string",
+                        "enum": [
+                            "Autre",
+                            "Concert-Spectacle",
+                            "Diner Gala",
+                            "Festival",
+                            "Formation"
+                        ]
+                    },
+                    "event_city": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "event_address": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "event_status": {
+                        "type": "string",
+                        "enum": [
+                            "upcoming",
+                            "completed",
+                            "cancelled"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Order": {
+                "title": "Order",
+                "description": "Modèle représentant une commande",
+                "properties": {
+                    "order_id": {
+                        "description": "ID unique de la commande",
+                        "type": "integer"
+                    },
+                    "order_number": {
+                        "description": "Numéro unique de la commande",
+                        "type": "string"
+                    },
+                    "order_event_id": {
+                        "description": "ID de l'événement associé à la commande",
+                        "type": "integer"
+                    },
+                    "order_price": {
+                        "description": "Prix de la commande",
+                        "type": "integer"
+                    },
+                    "order_type": {
+                        "description": "Type de commande",
+                        "type": "string"
+                    },
+                    "order_payment": {
+                        "description": "Méthode de paiement utilisée pour la commande",
+                        "type": "string"
+                    },
+                    "order_info": {
+                        "description": "Informations supplémentaires sur la commande",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "api_key": {
+                        "description": "Clé API utilisée pour créer cette commande",
+                        "type": "string"
+                    },
+                    "order_created_on": {
+                        "description": "Date et heure de création de la commande",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Date et heure de la dernière mise à jour de la commande",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderIntent": {
+                "properties": {
+                    "order_intent_id": {
+                        "type": "integer"
+                    },
+                    "order_intent_price": {
+                        "type": "integer"
+                    },
+                    "order_intent_type": {
+                        "type": "string"
+                    },
+                    "user_email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "user_phone": {
+                        "type": "string"
+                    },
+                    "expiration_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "TicketType": {
+                "required": [
+                    "ticket_type_event_id",
+                    "ticket_type_name",
+                    "ticket_type_price",
+                    "ticket_type_quantity",
+                    "ticket_type_real_quantity",
+                    "ticket_type_total_quantity",
+                    "ticket_type_description"
+                ],
+                "properties": {
+                    "ticket_type_id": {
+                        "description": "ID du type de ticket",
+                        "type": "integer"
+                    },
+                    "ticket_type_event_id": {
+                        "description": "ID de l'événement associé",
+                        "type": "integer"
+                    },
+                    "ticket_type_name": {
+                        "description": "Nom du type de ticket",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "ticket_type_price": {
+                        "description": "Prix du type de ticket",
+                        "type": "integer"
+                    },
+                    "ticket_type_quantity": {
+                        "description": "Quantité disponible du type de ticket",
+                        "type": "integer"
+                    },
+                    "ticket_type_real_quantity": {
+                        "description": "Quantité réelle du type de ticket",
+                        "type": "integer"
+                    },
+                    "ticket_type_total_quantity": {
+                        "description": "Quantité totale du type de ticket",
+                        "type": "integer"
+                    },
+                    "ticket_type_description": {
+                        "description": "Description du type de ticket",
+                        "type": "string",
+                        "maxLength": 16777215
+                    },
+                    "event": {
+                        "$ref": "#/components/schemas/Event"
+                    }
+                },
+                "type": "object"
+            },
+            "EventUpdateRequest": {
+                "properties": {
+                    "event_title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "event_description": {
+                        "type": "string"
+                    },
+                    "event_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "event_category": {
+                        "type": "string"
+                    },
+                    "event_image": {
+                        "type": "string"
+                    },
+                    "event_city": {
+                        "type": "string"
+                    },
+                    "event_address": {
+                        "type": "string"
+                    },
+                    "event_status": {
+                        "type": "string",
+                        "enum": [
+                            "upcoming",
+                            "completed",
+                            "cancelled"
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Use the token provided after logging in.",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Events",
+            "description": "API Endpoints pour la gestion des événements"
+        },
+        {
+            "name": "Orders",
+            "description": "Orders"
+        },
+        {
+            "name": "Order Intents",
+            "description": "Order Intents"
+        },
+        {
+            "name": "TicketTypes",
+            "description": "TicketTypes"
+        }
+    ]
+}
